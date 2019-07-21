@@ -1,36 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
-
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-var css = ".styles_table_builder_holder__3o9ub table {\n\tline-height: 1.25;\n\tborder: 0;\n\tborder-collapse: collapse;\n\twidth: 100%;\n\tfloat: left;\n}\n\ntr {\n\ttext-align: center;\n}\n\ntr:nth-of-type(odd) {\n\tbackground-color: #E5E5E5;\n}\n\nth {\n\tfont-weight: 700;\n\tbackground-color: #f2f2f2;\n\tcolor: #666;\n}\n\nth,\ntd {\n\tpadding: 10px 15px;\n\tborder: 1px solid #BFBFBF;\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}\n.styles_delete_row__2JBty{\n\n}\n.styles_table_builder_holder__3o9ub{\n\tpadding: 10px;\n\t    display: inline-block;\n}\n.styles_table_builder_holder__3o9ub .styles_Add_button__3JjNg{\n\tmargin: 10px 0;\n\tcursor: pointer;\n\tfloat: left;\n}\n.styles_Add_button__3JjNg.styles_add_colonne__1sq3K{\n\tfloat: right;\n}\ntd.styles_actions__31uEG {\n    border: 0;\n    background-color: #fff;\n}\n";
-var styles = { "table_builder_holder": "styles_table_builder_holder__3o9ub", "delete_row": "styles_delete_row__2JBty", "Add_button": "styles_Add_button__3JjNg", "add_colonne": "styles_add_colonne__1sq3K", "actions": "styles_actions__31uEG" };
-styleInject(css);
+import React from 'react';
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -80,34 +48,274 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-var ExampleComponent = function (_Component) {
-  inherits(ExampleComponent, _Component);
+var Colonne = function (_React$Component) {
+  inherits(Colonne, _React$Component);
 
-  function ExampleComponent() {
-    classCallCheck(this, ExampleComponent);
-    return possibleConstructorReturn(this, (ExampleComponent.__proto__ || Object.getPrototypeOf(ExampleComponent)).apply(this, arguments));
+  function Colonne() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    classCallCheck(this, Colonne);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = possibleConstructorReturn(this, (_ref = Colonne.__proto__ || Object.getPrototypeOf(Colonne)).call.apply(_ref, [this].concat(args))), _this), _this.ChangeValue = function (e) {
+      _this.setState({ valeur: e.target.value });
+      _this.props.ValueChanged(e, _this.props.i, _this.props.j);
+    }, _this.state = {
+      valeur: _this.props.valeur,
+      i: _this.props.i,
+      j: _this.props.j
+    }, _temp), possibleConstructorReturn(_this, _ret);
   }
 
-  createClass(ExampleComponent, [{
+  createClass(Colonne, [{
+    key: 'dismiss',
+    value: function dismiss() {
+      this.props.unmountMe();
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.j == this.state.j) {
+        console.log('match :', this.props.j == this.state.j);
+        this.setState({ valeur: nextProps.valeur });
+      }
+    }
+  }, {
+    key: 'CheckIsEditable',
+    value: function CheckIsEditable() {
+      var _this2 = this;
+
+      if (this.props.EnableRowEdit) {
+        return React.createElement('input', {
+          className: 'inputfield' + this.props.i + this.props.j,
+          key: 'inputfield' + this.props.i + this.props.j,
+          ref: 'inputfield' + this.props.i + this.props.j,
+          value: this.state.valeur,
+          onChange: function onChange(e) {
+            return _this2.ChangeValue(e);
+          } });
+      } else {
+        return this.state.valeur;
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var text = this.props.text;
-
-
       return React.createElement(
-        'div',
-        { className: styles.test },
-        'Example Component: ',
-        text
+        'span',
+        { key: 'input' + this.props.i + this.props.j, className: this.props.i + this.props.j },
+        this.CheckIsEditable()
       );
     }
   }]);
-  return ExampleComponent;
-}(Component);
+  return Colonne;
+}(React.Component);
 
-ExampleComponent.propTypes = {
-  text: PropTypes.string
+var Ligne = function (_React$Component) {
+  inherits(Ligne, _React$Component);
+
+  function Ligne() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    classCallCheck(this, Ligne);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = possibleConstructorReturn(this, (_ref = Ligne.__proto__ || Object.getPrototypeOf(Ligne)).call.apply(_ref, [this].concat(args))), _this), _this.CheckDeleteLabelLine = function () {
+      return _this.props.LabelDeleteLine ? _this.props.LabelDeleteLine : '-';
+    }, _temp), possibleConstructorReturn(_this, _ret);
+  }
+
+  createClass(Ligne, [{
+    key: 'dismiss',
+    value: function dismiss() {
+      this.props.unmountMe();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var LigneTable = Object.keys(this.props.data).map(function (key) {
+        return React.createElement(
+          'td',
+          { key: (key + _this2.props.i), className: key + _this2.props.i },
+          React.createElement(Colonne, {
+            ValueChanged: _this2.props.ValueUpdated,
+            i: _this2.props.i, key: 'td' + key,
+            valeur: _this2.props.data[key].value,
+            j: key,
+            EnableRowEdit: _this2.props.EnableRowEdit })
+        );
+      });
+
+      return React.createElement(
+        'tr',
+        null,
+        LigneTable,
+        React.createElement(
+          'td',
+          { className: 'actions' },
+          React.createElement(
+            'button',
+            { className: 'delete_row', onClick: function onClick(e) {
+                return _this2.props.DeleteLigne(_this2.props.i);
+              } },
+            this.CheckDeleteLabelLine()
+          )
+        )
+      );
+    }
+  }]);
+  return Ligne;
+}(React.Component);
+
+var TableBuilderGH = function (_React$Component) {
+	inherits(TableBuilderGH, _React$Component);
+
+	function TableBuilderGH(props) {
+		classCallCheck(this, TableBuilderGH);
+
+		var _this = possibleConstructorReturn(this, (TableBuilderGH.__proto__ || Object.getPrototypeOf(TableBuilderGH)).call(this, props));
+
+		_this.state = {
+			data: _this.props.data
+		};
+		_this.row = { "value": "New row" };
+
+		_this.DeleteLigne = function (i) {
+			var a = _this.state.data.splice(i, 1);
+			_this.props.OnTableUpdate(_this.state.data);
+		};
+
+		_this.ValueUpdated = function (e, i, j) {
+			console.log(e.target.value, i, j);
+			_this.state.data[i][j].value = e.target.value;
+			_this.props.OnTableUpdate(_this.state.data);
+		};
+
+		_this.state = {
+			data: _this.state.data
+		};
+
+		_this.AddLigne = function () {
+			var l = _this.state.data.length;
+			var row = JSON.parse(JSON.stringify(_this.row));
+			if (l > 0) {
+				var ObjectToPush = [];
+				for (var i = 0; i < _this.state.data[0].length; i++) {
+					ObjectToPush.push(JSON.parse(JSON.stringify(row)));
+				}
+
+				_this.state.data.push(ObjectToPush);
+			} else {
+				_this.state.data.push([row]);
+			}
+			_this.props.OnTableUpdate(_this.state.data);
+		};
+
+		_this.AddColonne = function () {
+			var row = JSON.parse(JSON.stringify(_this.row));
+
+			for (var i = 0; i < _this.state.data.length; i++) {
+				_this.state.data[i].push(JSON.parse(JSON.stringify(row)));
+			}
+			_this.props.OnTableUpdate(_this.state.data);
+		};
+
+		_this.CheCkAddRow = function () {
+			if (_this.props.EnableTableEdit) {
+				return React.createElement(
+					'button',
+					{ className: 'Add_button add_colonne', onClick: function onClick(e) {
+							return _this.AddColonne(e);
+						} },
+					_this.LabelAddRow()
+				);
+			}
+		};
+
+		_this.CheCkAddLine = function () {
+			if (_this.props.EnableTableEdit) {
+				return React.createElement(
+					'button',
+					{ className: 'Add_button', onClick: function onClick(e) {
+							return _this.AddLigne(e);
+						} },
+					_this.LabelAddLine()
+				);
+			}
+		};
+
+		_this.LabelAddLine = function () {
+			return _this.props.LabelAddLine ? _this.props.LabelAddLine : '+';
+		};
+
+		_this.LabelAddRow = function () {
+			return _this.props.LabelAddRow ? _this.props.LabelAddRow : '+';
+		};
+
+		_this.state = {
+			data: _this.props.data
+		};
+		_this.DeleteLigne = _this.DeleteLigne.bind(_this);
+		return _this;
+	}
+
+	createClass(TableBuilderGH, [{
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var LigneTable = Object.keys(this.state.data).map(function (key) {
+				return React.createElement(Ligne, {
+					DeleteLigne: _this2.DeleteLigne,
+					EnableRowEdit: _this2.props.EnableRowEdit,
+					ValueUpdated: _this2.ValueUpdated,
+					i: key,
+					key: key + 'ligne',
+					LabelDeleteLine: _this2.props.LabelDeleteLine,
+					data: _this2.state.data[key]
+				});
+			});
+
+			return React.createElement(
+				'div',
+				{ className: 'table_builder_holder' },
+				this.CheCkAddRow(),
+				React.createElement(
+					'table',
+					null,
+					React.createElement(
+						'tbody',
+						null,
+						LigneTable
+					)
+				),
+				this.CheCkAddLine()
+			);
+		}
+	}]);
+	return TableBuilderGH;
+}(React.Component);
+
+TableBuilderGH.propTypes = {
+	data: React.PropTypes.array.isRequired,
+	OnTableUpdate: React.PropTypes.func.isRequired,
+	EnableTableEdit: React.PropTypes.bool,
+	EnableRowEdit: React.PropTypes.bool,
+	LabelAddRow: React.PropTypes.string,
+	LabelAddLine: React.PropTypes.string
 };
 
-export default ExampleComponent;
+export default TableBuilderGH;
 //# sourceMappingURL=index.es.js.map

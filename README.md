@@ -6,13 +6,13 @@
 ### Installation
 
 ```
-npm i TableBuilderGH --save
+npm i table-builder-sgh --save
 ```
 
 If you prefer to use `yarn`, you can do:
 
 ```
-yarn add TableBuilderGH
+yarn add table-builder-sgh
 ```
 
 ### Usage
