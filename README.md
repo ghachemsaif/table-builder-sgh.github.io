@@ -1,6 +1,3 @@
-### Demo
-
-- Demo [here](https://reactjs.org/)
 
 
 ### Installation
