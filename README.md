@@ -19,7 +19,7 @@ yarn add table-builder-sgh
 
 ```
 import React, { Component } from 'react'
-import TableBuilderGHfrom 'table-builder-gh'
+import TableBuilderGHfrom 'table-builder-sgh'
 
 export default class App extends Component {
   data = [
